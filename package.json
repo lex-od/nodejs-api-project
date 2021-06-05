@@ -1,0 +1,30 @@
+{
+    "name": "nodejs-api-project",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "start": "node app",
+        "dev": "nodemon app",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/lex-od/nodejs-api-project.git"
+    },
+    "keywords": [],
+    "author": "Aleksey Yesin <esinru@gmail.com>",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/lex-od/nodejs-api-project/issues"
+    },
+    "homepage": "",
+    "dependencies": {
+        "cors": "^2.8.5",
+        "express": "^4.17.1",
+        "shortid": "^2.2.16"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.7"
+    }
+}
