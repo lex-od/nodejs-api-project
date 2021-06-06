@@ -1,9 +1,10 @@
 const express = require("express");
+const { getAll, getOne } = require("../controllers/contacts");
 
 const router = express.Router();
 
-router.get("/", (_, res) => {
-    res.json({ message: "hello" });
-});
+router.get("/", getAll);
+
+router.get("/:id", getOne);
 
 module.exports = router;
