@@ -4,12 +4,10 @@ const getOne = async (req, res, next) => {
     try {
         const contact = await db.getContactById(req.params.id);
 
-        if (!contact) {
-            const err = new Error("Contact with requested ID does not exist");
-            err.code = 404;
-
-            return next(err);
-        }
+        if (!contact)
+            return res
+                .status(404)
+                .json({ message: "Contact with requested ID does not exist" });
 
         res.json({
             result: contact,
