@@ -1,16 +1,15 @@
-const shortid = require("shortid");
 const { jsonContacts: db, joiSchemas: joi } = require("../../services");
-
-// const { error } = joi.newContact.validate({
-//     name: "nn",
-//     email: "a@b.com",
-//     phone: "",
-// });
-// console.log(error);
 
 const add = async ({ body }, res, next) => {
     try {
-        console.log(body);
+        const { error } = joi.newContact.validate(body);
+
+        if (error)
+            return res
+                .status(400)
+                .json({ message: error.details?.[0]?.message });
+
+        res.status(201).json(await db.addContact({ phone: "", ...body }));
     } catch {
         next(new Error("Data access error"));
     }
