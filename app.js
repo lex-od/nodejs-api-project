@@ -13,9 +13,10 @@ app.use((_, res) => {
 });
 
 app.use((err, _, res, __) => {
-    const { code = 500, message = "Server error" } = err;
+    const code = err.statusCode || 500;
+    const message = err.message || "Server error";
 
     res.status(code).json({ message });
 });
 
-app.listen(3000);
+app.listen(3000, () => console.log("Server is running..."));
