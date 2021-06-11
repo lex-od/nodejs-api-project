@@ -1,3 +1,5 @@
+const { contactsOps: ops } = require("../../services");
+
 const getAllContacts = async (_, res, next) => {
     //
 };
