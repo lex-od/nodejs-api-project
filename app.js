@@ -1,5 +1,7 @@
+const mongoose = require("mongoose");
 const express = require("express");
 const cors = require("cors");
+require("dotenv").config();
 const { contactsRouter } = require("./api");
 
 const app = express();
@@ -16,4 +18,16 @@ app.use(({ statusCode, message }, _, res, __) => {
     res.status(statusCode || 500).json({ message });
 });
 
-// app.listen(3000, () => console.log("Server is running..."));
+const { PORT, DB_HOST } = process.env;
+
+mongoose
+    .connect(DB_HOST, {
+        useNewUrlParser: true,
+        useCreateIndex: true,
+        useUnifiedTopology: true,
+    })
+    .then(() => {
+        console.log("DB Connected");
+        app.listen(PORT || 3000, () => console.log("Server is running..."));
+    })
+    .catch(({ message }) => console.log(`Init error: ${message}`));
