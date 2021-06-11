@@ -25,9 +25,21 @@ mongoose
         useNewUrlParser: true,
         useCreateIndex: true,
         useUnifiedTopology: true,
+        useFindAndModify: false,
     })
-    .then(() => {
-        console.log("DB Connected");
-        app.listen(PORT || 3000, () => console.log("Server is running..."));
+    .then(() =>
+        app.listen(PORT || 3000, () =>
+            console.log("DB connected. Server is running...")
+        )
+    )
+    .catch(({ message }) => {
+        console.log(`Init error: ${message}`);
+        process.exit(1);
+    });
+
+process.on("SIGINT", () =>
+    mongoose.connection.close(() => {
+        console.log("DB disconnected, server terminated.");
+        process.exit(1);
     })
-    .catch(({ message }) => console.log(`Init error: ${message}`));
+);
