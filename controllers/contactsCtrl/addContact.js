@@ -1,18 +1,20 @@
-// const { jsonContacts: db, joiSchemas: joi } = require("../../services");
+const { contactsOps: ops } = require("../../services");
 
-// const add = async ({ body }, res, next) => {
-//     try {
-//         const { error } = joi.newContact.validate(body);
+const addContact = async ({ body }, res, next) => {
+    try {
+        // const { error } = joi.newContact.validate(body);
 
-//         if (error)
-//             return res
-//                 .status(400)
-//                 .json({ message: error.details?.[0]?.message });
+        // if (error)
+        //     return res
+        //         .status(400)
+        //         .json({ message: error.details?.[0]?.message });
 
-//         res.status(201).json(await db.addContact({ phone: "", ...body }));
-//     } catch {
-//         next(new Error("Data access error"));
-//     }
-// };
+        res.status(201).json({ result: await ops.addContact(body) });
+    } catch (err) {
+        console.log(err.name, err.message);
 
-// module.exports = add;
+        next(new Error("Data access error"));
+    }
+};
+
+module.exports = addContact;

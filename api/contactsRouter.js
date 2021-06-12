@@ -13,7 +13,7 @@ router.get("/", getAllContacts);
 
 router.get("/:id", getContact);
 
-// router.post("/", express.json(), addContact);
+router.post("/", express.json(), addContact);
 
 // router.delete("/:id", removeContact);
 
