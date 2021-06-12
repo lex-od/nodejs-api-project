@@ -1,4 +1,7 @@
 const { Schema } = require("mongoose");
+const Joi = require("joi");
+
+const isEmail = (value) => !Joi.string().email().validate(value).error;
 
 const contactSchema = Schema(
     {
@@ -6,6 +9,7 @@ const contactSchema = Schema(
             type: String,
             required: [true, "Set name for contact"],
             cast: false,
+            trim: true,
             minlength: 2,
             maxlength: 50,
         },
@@ -13,6 +17,10 @@ const contactSchema = Schema(
         email: {
             type: String,
             required: true,
+            cast: false,
+            trim: true,
+            lowercase: true,
+            validate: [isEmail, "Invalid email"],
         },
 
         phone: {
