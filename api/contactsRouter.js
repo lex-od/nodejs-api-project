@@ -11,7 +11,7 @@ const router = express.Router();
 
 router.get("/", getAllContacts);
 
-// router.get("/:id", getContact);
+router.get("/:id", getContact);
 
 // router.post("/", express.json(), addContact);
 
