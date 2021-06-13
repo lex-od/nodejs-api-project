@@ -1,5 +1,5 @@
-const CustomError = require("./CustomError");
+const ApiError = require("./ApiError");
 
 module.exports = {
-    CustomError,
+    ApiError,
 };

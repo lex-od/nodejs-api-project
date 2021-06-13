@@ -1,13 +1,14 @@
 const { contactsOps: ops } = require("../../services");
+const { ApiError } = require("../../helpers");
 
 const addContact = async ({ body }, res, next) => {
     try {
         res.status(201).json({ result: await ops.addContact(body) });
     } catch (err) {
-        console.log(err.name, err.message);
-        // 📌 Добавить обработчик ошибок валидации
+        if (err.name === "ValidationError")
+            return next(new ApiError(err.message, 400));
 
-        next(new Error("Data access error"));
+        next(new ApiError("DB access error"));
     }
 };
 
