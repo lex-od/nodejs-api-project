@@ -7,20 +7,14 @@ const updateContact = async ({ params: { id }, body }, res, next) => {
         if (!mongoose.isValidObjectId(id))
             return next(new ApiError(consts.INVALID_ID_MSG, 400));
 
-        // const { error } = joi.newContact.validate(body);
-
-        // if (error)
-        //     return res
-        //         .status(400)
-        //         .json({ message: error.details?.[0]?.message });
-
         const contact = await ops.updateContact(id, body);
 
         if (!contact) return next(new ApiError(consts.ID_NOT_EXIST_MSG, 404));
 
         res.json({ result: contact });
     } catch (err) {
-        console.log(err.name, err.message);
+        if (err.name === "ValidationError")
+            return next(new ApiError(err.message, 400));
 
         next(new ApiError("DB access error"));
     }
