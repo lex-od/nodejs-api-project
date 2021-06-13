@@ -1,25 +1,29 @@
-// const { jsonContacts: db, joiSchemas: joi } = require("../../services");
+const mongoose = require("mongoose");
+const { contactsOps: ops } = require("../../services");
+const { ApiError, constants: consts } = require("../../helpers");
 
-// const update = async ({ params: { id }, body }, res, next) => {
-//     try {
-//         const { error } = joi.newContact.validate(body);
+const updateContact = async ({ params: { id }, body }, res, next) => {
+    try {
+        if (!mongoose.isValidObjectId(id))
+            return next(new ApiError(consts.INVALID_ID_MSG, 400));
 
-//         if (error)
-//             return res
-//                 .status(400)
-//                 .json({ message: error.details?.[0]?.message });
+        // const { error } = joi.newContact.validate(body);
 
-//         const contact = await db.updateContact(id, { phone: "", ...body });
+        // if (error)
+        //     return res
+        //         .status(400)
+        //         .json({ message: error.details?.[0]?.message });
 
-//         if (!contact)
-//             return res
-//                 .status(404)
-//                 .json({ message: "Contact with requested ID does not exist" });
+        const contact = await ops.updateContact(id, body);
 
-//         res.json(contact);
-//     } catch {
-//         next(new Error("Data access error"));
-//     }
-// };
+        if (!contact) return next(new ApiError(consts.ID_NOT_EXIST_MSG, 404));
 
-// module.exports = update;
+        res.json({ result: contact });
+    } catch (err) {
+        console.log(err.name, err.message);
+
+        next(new ApiError("DB access error"));
+    }
+};
+
+module.exports = updateContact;

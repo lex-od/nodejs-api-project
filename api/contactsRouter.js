@@ -17,6 +17,6 @@ router.post("/", express.json(), addContact);
 
 // router.delete("/:id", removeContact);
 
-// router.put("/:id", express.json(), updateContact);
+router.put("/:id", express.json(), updateContact);
 
 module.exports = router;
