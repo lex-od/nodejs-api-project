@@ -15,7 +15,7 @@ router.get("/:id", getContact);
 
 router.post("/", express.json(), addContact);
 
-// router.delete("/:id", removeContact);
+router.delete("/:id", removeContact);
 
 router.put("/:id", express.json(), updateContact);
 

@@ -1,18 +1,22 @@
-// const { jsonContacts: db } = require("../../services");
+const mongoose = require("mongoose");
+const { contactsOps: ops } = require("../../services");
+const { ApiError, constants: consts } = require("../../helpers");
 
-// const del = async ({ params: { id } }, res, next) => {
-//     try {
-//         if (!(await db.removeContact(id)))
-//             return res
-//                 .status(404)
-//                 .json({ message: "Contact with requested ID does not exist" });
+const removeContact = async ({ params: { id } }, res, next) => {
+    try {
+        if (!mongoose.isValidObjectId(id))
+            return next(new ApiError(consts.INVALID_ID_MSG, 400));
 
-//         res.json({
-//             message: "Contact successfully deleted",
-//         });
-//     } catch {
-//         next(new Error("Data access error"));
-//     }
-// };
+        const contact = await ops.removeContact(id);
 
-// module.exports = del;
+        if (!contact) return next(new ApiError(consts.ID_NOT_EXIST_MSG, 404));
+
+        res.json({
+            result: contact,
+        });
+    } catch {
+        next(new ApiError("DB access error"));
+    }
+};
+
+module.exports = removeContact;
