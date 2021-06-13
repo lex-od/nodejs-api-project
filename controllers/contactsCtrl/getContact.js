@@ -7,13 +7,11 @@ const getContact = async ({ params: { id } }, res, next) => {
         if (!mongoose.isValidObjectId(id))
             return next(new ApiError(consts.INVALID_ID_MSG, 400));
 
-        const contact = await ops.getContact(id);
+        const result = await ops.getContact(id);
 
-        if (!contact) return next(new ApiError(consts.ID_NOT_EXIST_MSG, 404));
+        if (!result) return next(new ApiError(consts.ID_NOT_EXIST_MSG, 404));
 
-        res.json({
-            result: contact,
-        });
+        res.json({ result });
     } catch {
         next(new ApiError("DB access error"));
     }

@@ -15,10 +15,14 @@ const updateContact = (id, data) =>
         overwrite: true,
     });
 
+const updateStatus = (id, data) =>
+    ContactModel.findByIdAndUpdate(id, data, { new: true });
+
 module.exports = {
     getAllContacts,
     getContact,
     addContact,
     updateContact,
     removeContact,
+    updateStatus,
 };

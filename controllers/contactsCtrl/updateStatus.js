@@ -2,12 +2,19 @@ const mongoose = require("mongoose");
 const { contactsOps: ops } = require("../../services");
 const { ApiError, constants: consts } = require("../../helpers");
 
-const updateContact = async ({ params: { id }, body }, res, next) => {
+const updateStatus = async (
+    { params: { id }, body: { favorite } },
+    res,
+    next
+) => {
     try {
         if (!mongoose.isValidObjectId(id))
             return next(new ApiError(consts.INVALID_ID_MSG, 400));
 
-        const result = await ops.updateContact(id, body);
+        if ([undefined, null].includes(favorite))
+            return next(new ApiError(consts.REQ_FAVORITE_MSG, 400));
+
+        const result = await ops.updateStatus(id, { favorite });
 
         if (!result) return next(new ApiError(consts.ID_NOT_EXIST_MSG, 404));
 
@@ -20,4 +27,4 @@ const updateContact = async ({ params: { id }, body }, res, next) => {
     }
 };
 
-module.exports = updateContact;
+module.exports = updateStatus;
