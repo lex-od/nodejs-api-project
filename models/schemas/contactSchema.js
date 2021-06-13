@@ -25,10 +25,15 @@ const contactSchema = Schema(
 
         phone: {
             type: String,
+            cast: false,
+            trim: true,
+            minlength: 7,
+            maxlength: 20,
         },
 
         favorite: {
             type: Boolean,
+            cast: false,
             default: false,
         },
     },
