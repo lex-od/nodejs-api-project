@@ -1,22 +1,45 @@
+const mongoose = require("mongoose");
 const express = require("express");
 const cors = require("cors");
-const api = require("./api");
+require("dotenv").config();
+const { contactsRouter } = require("./api");
 
 const app = express();
 
 app.use(cors());
 
-app.use("/api/v1/contacts", api.contacts);
+app.use("/api/contacts", contactsRouter);
 
 app.use((_, res) => {
     res.status(404).json({ message: "Resourse not found" });
 });
 
-app.use((err, _, res, __) => {
-    const code = err.statusCode || 500;
-    const message = err.message || "Server error";
-
-    res.status(code).json({ message });
+app.use(({ statusCode, message }, _, res, __) => {
+    res.status(statusCode || 500).json({ message });
 });
 
-app.listen(3000, () => console.log("Server is running..."));
+const { PORT, DB_HOST } = process.env;
+
+mongoose
+    .connect(DB_HOST, {
+        useNewUrlParser: true,
+        useCreateIndex: true,
+        useUnifiedTopology: true,
+        useFindAndModify: false,
+    })
+    .then(() =>
+        app.listen(PORT || 3000, () =>
+            console.log("DB connected. Server is running...")
+        )
+    )
+    .catch(({ message }) => {
+        console.log(`Init error: ${message}`);
+        process.exit(1);
+    });
+
+process.on("SIGINT", () =>
+    mongoose.connection.close(() => {
+        console.log("DB disconnected, server terminated.");
+        process.exit(1);
+    })
+);

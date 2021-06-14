@@ -1,7 +1,5 @@
-const jsonContacts = require("./jsonContacts");
-const joiSchemas = require("./joiSchemas");
+const contactsOps = require("./contactsOps");
 
 module.exports = {
-    jsonContacts,
-    joiSchemas,
+    contactsOps,
 };
