@@ -1,13 +1,14 @@
-const { Schema } = require("mongoose");
-const Joi = require("joi");
+const { Schema, SchemaTypes } = require("mongoose");
+const { joiExtra } = require("../../validations");
+const { validationConsts } = require("../../helpers");
 
-const isEmail = (value) => !Joi.string().email().validate(value).error;
+const { REQ_NAME, REQ_EMAIL, INV_EMAIL } = validationConsts;
 
 const contactSchema = Schema(
     {
         name: {
             type: String,
-            required: [true, "Set name for contact"],
+            required: [true, REQ_NAME],
             cast: false,
             trim: true,
             minlength: 2,
@@ -16,11 +17,11 @@ const contactSchema = Schema(
 
         email: {
             type: String,
-            required: true,
+            required: [true, REQ_EMAIL],
             cast: false,
             trim: true,
             lowercase: true,
-            validate: [isEmail, "Invalid email"],
+            validate: [joiExtra.isEmail, INV_EMAIL],
         },
 
         phone: {
@@ -36,8 +37,13 @@ const contactSchema = Schema(
             cast: false,
             default: false,
         },
-    },
-    { versionKey: false, timestamps: true }
+
+        owner: {
+            type: SchemaTypes.ObjectId,
+            ref: "user",
+        },
+    }
+    // { versionKey: false, timestamps: true }
 );
 
 module.exports = contactSchema;
