@@ -1,9 +1,9 @@
 const ApiError = require("./ApiError");
-const constants = require("./constants");
+const apiConsts = require("./apiConsts");
 const validationConsts = require("./validationConsts");
 
 module.exports = {
     ApiError,
-    constants,
+    apiConsts,
     validationConsts,
 };

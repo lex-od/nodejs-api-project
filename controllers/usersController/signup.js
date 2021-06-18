@@ -1,6 +1,9 @@
-// const jwt = require("jsonwebtoken");
-// require("dotenv").config();
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 const { usersService: srv } = require("../../services");
+const { ApiError, apiConsts } = require("../../helpers");
+
+const { EMAIL_IN_USE, REQUEST_ERRORS } = apiConsts;
 
 const signup = async (
     { body: { email, password, subscription } },
@@ -8,30 +11,22 @@ const signup = async (
     next
 ) => {
     try {
-        // const result = await service.getOne({ email });
-        // if (result) {
-        //     return res.status(409).json({
-        //         status: "error",
-        //         code: 409,
-        //         message: "Alredy register",
-        //     });
-        // }
-        // const data = await service.add({ email, password });
-        // const { TOKEN_KEY } = process.env;
-        // const payload = {
-        //     id: data._id,
-        // };
-        // const token = jwt.sign(payload, TOKEN_KEY);
-        // res.status(201).json({
-        //     status: "success",
-        //     code: 201,
-        //     message: "Add sucess",
-        //     data: {
-        //         token,
-        //     },
-        // });
-    } catch (error) {
-        // next(error);
+        const user = await srv.getUser({ email });
+
+        if (user) return next(new ApiError(EMAIL_IN_USE, 409));
+
+        const { _id } = await srv.addUser({ email, password, subscription });
+
+        const { TOKEN_KEY } = process.env;
+        const payload = { _id };
+        const token = jwt.sign(payload, TOKEN_KEY);
+
+        res.status(201).json({ result: { token } });
+    } catch ({ name, message }) {
+        if (REQUEST_ERRORS.includes(name))
+            return next(new ApiError(message, 400));
+
+        next(new ApiError("DB access error"));
     }
 };
 

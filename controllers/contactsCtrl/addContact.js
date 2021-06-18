@@ -1,5 +1,5 @@
 const { contactsOps: ops } = require("../../services");
-const { ApiError, constants: consts } = require("../../helpers");
+const { ApiError, apiConsts: consts } = require("../../helpers");
 
 const addContact = async ({ body }, res, next) => {
     try {

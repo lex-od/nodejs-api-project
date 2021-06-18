@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const { contactsOps: ops } = require("../../services");
-const { ApiError, constants: consts } = require("../../helpers");
+const { ApiError, apiConsts: consts } = require("../../helpers");
 
 const updateStatus = async (
     { params: { id }, body: { favorite } },
