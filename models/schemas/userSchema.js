@@ -47,7 +47,7 @@ userSchema.methods.setPassword = function (password) {
     this.password = bcrypt.hashSync(password, bcrypt.genSaltSync(6));
 };
 
-userSchema.methods.validPassword = (password) => {
+userSchema.methods.comparePassword = function (password) {
     return bcrypt.compareSync(password, this.password);
 };
 
