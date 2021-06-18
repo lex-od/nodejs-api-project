@@ -1,4 +1,4 @@
-const UserModel = require("../models");
+const { UserModel } = require("../models");
 
 const getUser = (data) => {
     return UserModel.findOne(data);

@@ -3,7 +3,8 @@ require("dotenv").config();
 const { usersService: srv } = require("../../services");
 const { ApiError, apiConsts } = require("../../helpers");
 
-const { EMAIL_IN_USE, REQUEST_ERRORS } = apiConsts;
+const { TOKEN_KEY } = process.env;
+const { EMAIL_IN_USE, INV_PASSWORD, REQUEST_ERRORS } = apiConsts;
 
 const signup = async (
     { body: { email, password, subscription } },
@@ -15,9 +16,11 @@ const signup = async (
 
         if (user) return next(new ApiError(EMAIL_IN_USE, 409));
 
+        if (typeof password !== "string" || password.length < 4)
+            return next(new ApiError(INV_PASSWORD, 400));
+
         const { _id } = await srv.addUser({ email, password, subscription });
 
-        const { TOKEN_KEY } = process.env;
         const payload = { _id };
         const token = jwt.sign(payload, TOKEN_KEY);
 

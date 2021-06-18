@@ -16,8 +16,6 @@ const userSchema = Schema({
     password: {
         type: String,
         required: [true, REQ_PASSWORD],
-        cast: false,
-        minlength: 4,
     },
 
     email: {
