@@ -1,9 +1,6 @@
-const jwt = require("jsonwebtoken");
-require("dotenv").config();
 const { usersService: srv } = require("../../services");
 const { ApiError, apiConsts } = require("../../helpers");
 
-const { TOKEN_KEY } = process.env;
 const { EMAIL_IN_USE, INV_PASSWORD, REQUEST_ERRORS } = apiConsts;
 
 const signup = async (
@@ -19,12 +16,19 @@ const signup = async (
         if (typeof password !== "string" || password.length < 4)
             return next(new ApiError(INV_PASSWORD, 400));
 
-        const { _id } = await srv.addUser({ email, password, subscription });
+        const newUser = await srv.addUserWithToken({
+            email,
+            password,
+            subscription,
+        });
 
-        const payload = { _id };
-        const token = jwt.sign(payload, TOKEN_KEY);
-
-        res.status(201).json({ result: { token } });
+        res.status(201).json({
+            result: {
+                email: newUser.email,
+                subscription: newUser.subscription,
+                token: newUser.token,
+            },
+        });
     } catch ({ name, message }) {
         if (REQUEST_ERRORS.includes(name))
             return next(new ApiError(message, 400));

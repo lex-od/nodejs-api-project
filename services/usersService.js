@@ -1,4 +1,8 @@
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 const { UserModel } = require("../models");
+
+const { TOKEN_KEY } = process.env;
 
 const getUser = (data) => {
     return UserModel.findOne(data);
@@ -8,14 +12,18 @@ const getUserById = (id) => {
     return UserModel.findById(id);
 };
 
-const addUser = ({ password, ...rest }) => {
+const addUserWithToken = ({ password, ...rest }) => {
     const user = new UserModel(rest);
+
     user.setPassword(password);
+
+    user.token = jwt.sign({ _id: user._id }, TOKEN_KEY);
+
     return user.save();
 };
 
 module.exports = {
     getUser,
     getUserById,
-    addUser,
+    addUserWithToken,
 };
