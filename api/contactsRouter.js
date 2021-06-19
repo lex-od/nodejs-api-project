@@ -1,4 +1,5 @@
 const express = require("express");
+const guard = require("./guard");
 const {
     getAllContacts,
     getContact,
@@ -10,16 +11,16 @@ const {
 
 const router = express.Router();
 
-router.get("/", getAllContacts);
+router.get("/", guard, getAllContacts);
 
-router.get("/:id", getContact);
+router.get("/:id", guard, getContact);
 
-router.post("/", express.json(), addContact);
+router.post("/", guard, express.json(), addContact);
 
-router.delete("/:id", removeContact);
+router.delete("/:id", guard, removeContact);
 
-router.put("/:id", express.json(), updateContact);
+router.put("/:id", guard, express.json(), updateContact);
 
-router.patch("/:id/favorite", express.json(), updateStatus);
+router.patch("/:id/favorite", guard, express.json(), updateStatus);
 
 module.exports = router;

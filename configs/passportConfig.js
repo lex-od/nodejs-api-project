@@ -5,7 +5,7 @@ const { usersService: srv } = require("../services");
 const { ApiError, apiConsts } = require("../helpers");
 
 const { TOKEN_KEY } = process.env;
-const { NOT_AUTHORIZED, DB_ACCESS_ERROR } = apiConsts;
+const { DB_ACCESS_ERROR } = apiConsts;
 
 const settings = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -17,7 +17,7 @@ passport.use(
         try {
             const user = await srv.getUserById(_id);
 
-            if (!user) return done(new ApiError(NOT_AUTHORIZED, 401));
+            // 📌 Добавить проверку совпадения полученного токена с сохраненным в БД
 
             done(null, user);
         } catch {
