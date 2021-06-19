@@ -1,7 +1,7 @@
 // 📌 CONTACTS
 
 const INVALID_ID_MSG = "Invalid ID format";
-const ID_NOT_EXIST_MSG = "Contact with requested ID does not exist";
+const ID_NOT_EXIST_MSG = "Requested contact does not exist";
 
 const REQ_FAVORITE_MSG = "Field favorite is required";
 

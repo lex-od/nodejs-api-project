@@ -1,8 +1,8 @@
 const { ContactModel } = require("../models");
 
-const getAllContacts = () => ContactModel.find();
+const getAllContacts = (owner) => ContactModel.find({ owner });
 
-const getContact = (id) => ContactModel.findById(id);
+const getContact = (_id, owner) => ContactModel.findOne({ _id, owner });
 
 const addContact = (data) => ContactModel.create(data);
 
