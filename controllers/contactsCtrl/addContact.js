@@ -1,14 +1,16 @@
 const { contactsOps: ops } = require("../../services");
-const { ApiError, apiConsts: consts } = require("../../helpers");
+const { ApiError, apiConsts } = require("../../helpers");
+
+const { REQUEST_ERRORS, DB_ACCESS_ERROR } = apiConsts;
 
 const addContact = async ({ body }, res, next) => {
     try {
         res.status(201).json({ result: await ops.addContact(body) });
     } catch ({ name, message }) {
-        if (consts.REQUEST_ERRORS.includes(name))
+        if (REQUEST_ERRORS.includes(name))
             return next(new ApiError(message, 400));
 
-        next(new ApiError("DB access error"));
+        next(new ApiError(DB_ACCESS_ERROR));
     }
 };
 

@@ -4,7 +4,8 @@ const { usersService: srv } = require("../../services");
 const { ApiError, apiConsts } = require("../../helpers");
 
 const { TOKEN_KEY } = process.env;
-const { INV_PASSWORD_TYPE, LOGIN_FAILED, REQUEST_ERRORS } = apiConsts;
+const { INV_PASSWORD_TYPE, LOGIN_FAILED, REQUEST_ERRORS, DB_ACCESS_ERROR } =
+    apiConsts;
 
 const login = async ({ body: { email, password } }, res, next) => {
     try {
@@ -31,7 +32,7 @@ const login = async ({ body: { email, password } }, res, next) => {
         if (REQUEST_ERRORS.includes(name))
             return next(new ApiError(message, 400));
 
-        next(new ApiError("DB access error"));
+        next(new ApiError(DB_ACCESS_ERROR));
     }
 };
 

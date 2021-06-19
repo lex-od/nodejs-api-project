@@ -14,9 +14,15 @@ const INV_PASSWORD_TYPE = "Password must be a string";
 
 const LOGIN_FAILED = "Email or password is wrong";
 
+// 📌 GUARD
+
+const NOT_AUTHORIZED = "Not authorized";
+
 // 📌 COMMON
 
 const REQUEST_ERRORS = ["ValidationError", "CastError"];
+
+const DB_ACCESS_ERROR = "DB access error";
 
 module.exports = {
     INVALID_ID_MSG,
@@ -28,5 +34,8 @@ module.exports = {
     INV_PASSWORD_TYPE,
     LOGIN_FAILED,
 
+    NOT_AUTHORIZED,
+
     REQUEST_ERRORS,
+    DB_ACCESS_ERROR,
 };

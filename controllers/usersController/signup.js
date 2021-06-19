@@ -1,7 +1,8 @@
 const { usersService: srv } = require("../../services");
 const { ApiError, apiConsts } = require("../../helpers");
 
-const { EMAIL_IN_USE, INV_PASSWORD, REQUEST_ERRORS } = apiConsts;
+const { EMAIL_IN_USE, INV_PASSWORD, REQUEST_ERRORS, DB_ACCESS_ERROR } =
+    apiConsts;
 
 const signup = async (
     { body: { email, password, subscription } },
@@ -33,7 +34,7 @@ const signup = async (
         if (REQUEST_ERRORS.includes(name))
             return next(new ApiError(message, 400));
 
-        next(new ApiError("DB access error"));
+        next(new ApiError(DB_ACCESS_ERROR));
     }
 };
 
