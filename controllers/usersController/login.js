@@ -19,7 +19,7 @@ const login = async ({ body: { email, password } }, res, next) => {
 
         const token = jwt.sign({ _id: user._id }, TOKEN_KEY);
 
-        const updUser = await srv.updateUserById(user._id, { token });
+        const updUser = await srv.updateFieldById(user._id, { token });
 
         res.json({
             result: {
