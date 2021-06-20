@@ -6,7 +6,8 @@ const getContact = (_id, owner) => ContactModel.findOne({ _id, owner });
 
 const addContact = (data) => ContactModel.create(data);
 
-const removeContact = (id) => ContactModel.findByIdAndDelete(id);
+const removeContact = (_id, owner) =>
+    ContactModel.findOneAndDelete({ _id, owner }, { projection: "-owner" });
 
 const updateContact = (id, data) =>
     ContactModel.findByIdAndUpdate(id, data, {

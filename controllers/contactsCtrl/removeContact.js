@@ -4,12 +4,12 @@ const { ApiError, apiConsts } = require("../../helpers");
 
 const { INVALID_ID_MSG, ID_NOT_EXIST_MSG, DB_ACCESS_ERROR } = apiConsts;
 
-const removeContact = async ({ params: { id } }, res, next) => {
+const removeContact = async ({ params: { id }, user }, res, next) => {
     try {
         if (!mongoose.isValidObjectId(id))
             return next(new ApiError(INVALID_ID_MSG, 400));
 
-        const result = await ops.removeContact(id);
+        const result = await ops.removeContact(id, user._id);
 
         if (!result) return next(new ApiError(ID_NOT_EXIST_MSG, 404));
 
