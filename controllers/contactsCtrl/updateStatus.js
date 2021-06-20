@@ -11,7 +11,7 @@ const {
 } = apiConsts;
 
 const updateStatus = async (
-    { params: { id }, body: { favorite } },
+    { params: { id }, user, body: { favorite } },
     res,
     next
 ) => {
@@ -22,7 +22,7 @@ const updateStatus = async (
         if ([undefined, null].includes(favorite))
             return next(new ApiError(REQ_FAVORITE_MSG, 400));
 
-        const result = await ops.updateStatus(id, { favorite });
+        const result = await ops.updateFields(id, user._id, { favorite });
 
         if (!result) return next(new ApiError(ID_NOT_EXIST_MSG, 404));
 
