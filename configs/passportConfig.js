@@ -17,7 +17,7 @@ passport.use(
         try {
             const user = await srv.getUserById(_id);
 
-            // 📌 Добавить проверку совпадения полученного токена с сохраненным в БД
+            if (!user?.token) return done(null, false);
 
             done(null, user);
         } catch {
