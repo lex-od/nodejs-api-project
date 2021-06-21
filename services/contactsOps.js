@@ -1,22 +1,27 @@
 const { ContactModel } = require("../models");
 
-const getAllContacts = () => ContactModel.find();
+const getAllContacts = (owner) => ContactModel.find({ owner });
 
-const getContact = (id) => ContactModel.findById(id);
+const getContact = (_id, owner) => ContactModel.findOne({ _id, owner });
 
 const addContact = (data) => ContactModel.create(data);
 
-const removeContact = (id) => ContactModel.findByIdAndDelete(id);
+const removeContact = (_id, owner) =>
+    ContactModel.findOneAndDelete({ _id, owner }, { projection: "-owner" });
 
-const updateContact = (id, data) =>
-    ContactModel.findByIdAndUpdate(id, data, {
+const updateContact = (_id, owner, data) =>
+    ContactModel.findOneAndUpdate({ _id, owner }, data, {
         new: true,
         runValidators: true,
         overwrite: true,
+        projection: "-owner",
     });
 
-const updateStatus = (id, data) =>
-    ContactModel.findByIdAndUpdate(id, data, { new: true });
+const updateFields = (_id, owner, data) =>
+    ContactModel.findOneAndUpdate({ _id, owner }, data, {
+        new: true,
+        projection: "-owner",
+    });
 
 module.exports = {
     getAllContacts,
@@ -24,5 +29,5 @@ module.exports = {
     addContact,
     updateContact,
     removeContact,
-    updateStatus,
+    updateFields,
 };

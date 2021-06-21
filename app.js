@@ -2,13 +2,14 @@ const mongoose = require("mongoose");
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
-const { contactsRouter } = require("./api");
+const { contactsRouter, usersRouter } = require("./api");
 
 const app = express();
 
 app.use(cors());
 
 app.use("/api/contacts", contactsRouter);
+app.use("/api/users", usersRouter);
 
 app.use((_, res) => {
     res.status(404).json({ message: "Resourse not found" });
