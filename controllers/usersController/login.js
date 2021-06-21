@@ -19,15 +19,11 @@ const login = async ({ body: { email, password } }, res, next) => {
 
         const token = jwt.sign({ _id: user._id }, TOKEN_KEY);
 
-        const updUser = await srv.updateFieldById(user._id, { token });
+        const {
+            _doc: { password: _, ...result },
+        } = await srv.updateFieldById(user._id, { token });
 
-        res.json({
-            result: {
-                email: updUser.email,
-                subscription: updUser.subscription,
-                token: updUser.token,
-            },
-        });
+        res.json({ result });
     } catch ({ name, message }) {
         if (REQUEST_ERRORS.includes(name))
             return next(new ApiError(message, 400));

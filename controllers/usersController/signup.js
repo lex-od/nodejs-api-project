@@ -17,19 +17,15 @@ const signup = async (
         if (typeof password !== "string" || password.length < 4)
             return next(new ApiError(INV_PASSWORD, 400));
 
-        const newUser = await srv.addUserWithToken({
+        const {
+            _doc: { password: _, ...result },
+        } = await srv.addUserWithToken({
             email,
             password,
             subscription,
         });
 
-        res.status(201).json({
-            result: {
-                email: newUser.email,
-                subscription: newUser.subscription,
-                token: newUser.token,
-            },
-        });
+        res.status(201).json({ result });
     } catch ({ name, message }) {
         if (REQUEST_ERRORS.includes(name))
             return next(new ApiError(message, 400));
