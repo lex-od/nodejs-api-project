@@ -6,6 +6,7 @@ require("dotenv").config();
 const { contactsRouter, usersRouter } = require("./api");
 const { apiConsts } = require("./helpers");
 
+const { PORT, DB_HOST } = process.env;
 const { MULTER_FS_LIMIT } = apiConsts;
 
 const app = express();
@@ -26,8 +27,6 @@ app.use(({ code, message, statusCode }, _, res, __) => {
 
     res.status(statusCode || 500).json({ message });
 });
-
-const { PORT, DB_HOST } = process.env;
 
 mongoose
     .connect(DB_HOST, {

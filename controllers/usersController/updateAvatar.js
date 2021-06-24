@@ -2,9 +2,7 @@ const jimp = require("jimp");
 const path = require("path");
 const fs = require("fs/promises");
 const { usersService: srv } = require("../../services");
-// const { ApiError, apiConsts } = require("../../helpers");
-
-// const { DB_ACCESS_ERROR } = apiConsts;
+const { ApiError } = require("../../helpers");
 
 const uploadDir = path.join(process.cwd(), "public", "avatars");
 
@@ -19,17 +17,17 @@ const updateAvatar = async (
 
         const uploadFileName = _id + path.extname(tempPath);
 
-        fs.rename(tempPath, path.join(uploadDir, uploadFileName));
+        await fs.rename(tempPath, path.join(uploadDir, uploadFileName));
 
-        const result = await srv.updateFieldById(_id, {
+        const { avatarUrl } = await srv.updateFieldById(_id, {
             avatarUrl: "/avatars/" + uploadFileName,
         });
 
-        res.json({ result });
-    } catch (err) {
-        console.log(err.name, err.message);
+        res.json({ result: { avatarUrl } });
+    } catch ({ message }) {
+        await fs.unlink(tempPath);
 
-        // next(new ApiError(DB_ACCESS_ERROR));
+        next(new ApiError(message));
     }
 };
 
