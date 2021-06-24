@@ -1,5 +1,6 @@
 const { Schema } = require("mongoose");
 const bcrypt = require("bcryptjs");
+const gravatar = require("gravatar");
 const { joiExtra } = require("../../validations");
 const { validationConsts } = require("../../helpers");
 
@@ -40,6 +41,13 @@ const userSchema = Schema({
     token: {
         type: String,
         default: null,
+    },
+
+    avatarUrl: {
+        type: String,
+        default() {
+            return gravatar.url(this.email, { s: "250" }, true);
+        },
     },
 });
 
