@@ -1,31 +1,34 @@
 const jimp = require("jimp");
 const path = require("path");
+const fs = require("fs/promises");
 const { usersService: srv } = require("../../services");
 // const { ApiError, apiConsts } = require("../../helpers");
 
 // const { DB_ACCESS_ERROR } = apiConsts;
 
-const uploadFolder = path.join(process.cwd(), "public", "avatars");
+const uploadDir = path.join(process.cwd(), "public", "avatars");
 
 const updateAvatar = async (
-    { user: { _id }, file: { path: filePath, filename } },
+    { user: { _id }, file: { path: tempPath } },
     res,
     next
 ) => {
     try {
-        const jimpImg = await jimp.read(filePath);
+        const img = await jimp.read(tempPath);
+        await img.cover(250, 250).writeAsync(tempPath);
 
-        await jimpImg
-            .autocrop()
-            .cover(
-                250,
-                250,
-                jimp.HORIZONTAL_ALIGN_CENTER | jimp.VERTICAL_ALIGN_MIDDLE
-            )
-            .writeAsync(filePath);
+        const uploadFileName = _id + path.extname(tempPath);
 
-        res.json();
-    } catch {
+        fs.rename(tempPath, path.join(uploadDir, uploadFileName));
+
+        const result = await srv.updateFieldById(_id, {
+            avatarUrl: "/avatars/" + uploadFileName,
+        });
+
+        res.json({ result });
+    } catch (err) {
+        console.log(err.name, err.message);
+
         // next(new ApiError(DB_ACCESS_ERROR));
     }
 };
