@@ -1,12 +1,15 @@
 const mongoose = require("mongoose");
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
 require("dotenv").config();
 const { contactsRouter, usersRouter } = require("./api");
 
 const app = express();
 
 app.use(cors());
+
+app.use(express.static(path.join(process.cwd(), "public")));
 
 app.use("/api/contacts", contactsRouter);
 app.use("/api/users", usersRouter);
