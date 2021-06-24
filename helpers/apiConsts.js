@@ -18,6 +18,10 @@ const LOGIN_FAILED = "Email or password is wrong";
 
 const NOT_AUTHORIZED = "Not authorized";
 
+// 📌 MULTER
+
+const MULTER_FS_LIMIT = "LIMIT_FILE_SIZE";
+
 // 📌 COMMON
 
 const REQUEST_ERRORS = ["ValidationError", "CastError"];
@@ -35,6 +39,8 @@ module.exports = {
     LOGIN_FAILED,
 
     NOT_AUTHORIZED,
+
+    MULTER_FS_LIMIT,
 
     REQUEST_ERRORS,
     DB_ACCESS_ERROR,

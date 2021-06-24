@@ -4,6 +4,9 @@ const cors = require("cors");
 const path = require("path");
 require("dotenv").config();
 const { contactsRouter, usersRouter } = require("./api");
+const { apiConsts } = require("./helpers");
+
+const { MULTER_FS_LIMIT } = apiConsts;
 
 const app = express();
 
@@ -18,7 +21,9 @@ app.use((_, res) => {
     res.status(404).json({ message: "Resourse not found" });
 });
 
-app.use(({ statusCode, message }, _, res, __) => {
+app.use(({ code, message, statusCode }, _, res, __) => {
+    if (code === MULTER_FS_LIMIT) return res.status(400).json({ message });
+
     res.status(statusCode || 500).json({ message });
 });
 

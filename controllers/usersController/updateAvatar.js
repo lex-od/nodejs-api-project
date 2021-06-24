@@ -1,3 +1,4 @@
+const jimp = require("jimp");
 const { usersService: srv } = require("../../services");
 // const { ApiError, apiConsts } = require("../../helpers");
 
