@@ -1,8 +1,12 @@
+const shortid = require("shortid");
 const { usersService: srv } = require("../../services");
-const { ApiError, apiConsts } = require("../../helpers");
+const {
+    ApiError,
+    apiConsts,
+    emailOperations: emailOps,
+} = require("../../helpers");
 
-const { EMAIL_IN_USE, INV_PASSWORD, REQUEST_ERRORS, DB_ACCESS_ERROR } =
-    apiConsts;
+const { EMAIL_IN_USE, INV_PASSWORD, REQUEST_ERRORS } = apiConsts;
 
 const signup = async (
     { body: { email, password, subscription } },
@@ -17,12 +21,17 @@ const signup = async (
         if (typeof password !== "string" || password.length < 4)
             return next(new ApiError(INV_PASSWORD, 400));
 
+        const verificationToken = shortid();
+
+        await emailOps.sendMail(email, verificationToken);
+
         const {
-            _doc: { password: _, ...result },
-        } = await srv.addUserWithToken({
+            _doc: { token, password: _, verificationToken: __, ...result },
+        } = await srv.addUser({
             email,
             password,
             subscription,
+            verificationToken,
         });
 
         res.status(201).json({ result });
@@ -30,7 +39,7 @@ const signup = async (
         if (REQUEST_ERRORS.includes(name))
             return next(new ApiError(message, 400));
 
-        next(new ApiError(DB_ACCESS_ERROR));
+        next(new ApiError(message));
     }
 };
 

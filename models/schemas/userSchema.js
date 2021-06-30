@@ -49,6 +49,16 @@ const userSchema = Schema({
             return gravatar.url(this.email, { s: "250" }, true);
         },
     },
+
+    verified: {
+        type: Boolean,
+        default: false,
+    },
+
+    verificationToken: {
+        type: String,
+        required: true,
+    },
 });
 
 userSchema.methods.setPassword = function (password) {

@@ -8,9 +8,15 @@ const REQ_FAVORITE_MSG = "Field favorite is required";
 // 📌 USERS
 
 const EMAIL_IN_USE = "Email already in use";
+const REQ_EMAIL = "Field email is required";
 
 const INV_PASSWORD = "Password must be a string, min 4 chars";
 const INV_PASSWORD_TYPE = "Password must be a string";
+
+const USER_NOT_FOUND = "User not found";
+const USER_VRF_SUCCESS = "Verification successful";
+const USER_VRF_PASSED = "Verification has already been passed";
+const USER_VRF_SENT = "Verification email sent";
 
 const LOGIN_FAILED = "Email or password is wrong";
 
@@ -34,8 +40,13 @@ module.exports = {
     REQ_FAVORITE_MSG,
 
     EMAIL_IN_USE,
+    REQ_EMAIL,
     INV_PASSWORD,
     INV_PASSWORD_TYPE,
+    USER_NOT_FOUND,
+    USER_VRF_SUCCESS,
+    USER_VRF_PASSED,
+    USER_VRF_SENT,
     LOGIN_FAILED,
 
     NOT_AUTHORIZED,
