@@ -12,6 +12,9 @@ const EMAIL_IN_USE = "Email already in use";
 const INV_PASSWORD = "Password must be a string, min 4 chars";
 const INV_PASSWORD_TYPE = "Password must be a string";
 
+const USER_NOT_FOUND = "User not found";
+const USER_VRF_SUCCESS = "Verification successful";
+
 const LOGIN_FAILED = "Email or password is wrong";
 
 // 📌 GUARD
@@ -36,6 +39,8 @@ module.exports = {
     EMAIL_IN_USE,
     INV_PASSWORD,
     INV_PASSWORD_TYPE,
+    USER_NOT_FOUND,
+    USER_VRF_SUCCESS,
     LOGIN_FAILED,
 
     NOT_AUTHORIZED,

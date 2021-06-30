@@ -21,9 +21,13 @@ const addUserWithToken = ({ password, ...rest }) => {
 const updateFieldById = (id, data) =>
     UserModel.findByIdAndUpdate(id, data, { new: true });
 
+const updateFields = (filter, data) =>
+    UserModel.findOneAndUpdate(filter, data, { new: true });
+
 module.exports = {
     getUser,
     getUserById,
     addUserWithToken,
     updateFieldById,
+    updateFields,
 };
