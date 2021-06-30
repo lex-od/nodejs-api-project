@@ -1,20 +1,28 @@
+const nodemailer = require("nodemailer");
 const Mailgen = require("mailgen");
 require("dotenv").config();
 
-const { API_BASE_URL } = process.env;
+const { API_BASE_URL, METAUA_PASS } = process.env;
+
+const mailGen = new Mailgen({
+    theme: "default",
+    product: {
+        name: "Contacts Api Service",
+        link: "http://contactsapiservice.ua",
+    },
+});
+
+const transporter = nodemailer.createTransport({
+    host: "smtp.meta.ua",
+    port: 465,
+    secure: true,
+    auth: { user: "fxzone@meta.ua", pass: METAUA_PASS },
+});
 
 const createBody = (verificationToken) => {
-    const mailGen = new Mailgen({
-        theme: "default",
-        product: {
-            name: "Contacts Api Service",
-            link: "http://contactsapiservice.ua",
-        },
-    });
-
-    const email = {
+    const msg = {
         body: {
-            // name,
+            name: "Guest",
             intro: "Welcome to Contacts Api Service! We're very excited to have you on board.",
             action: {
                 instructions:
@@ -29,7 +37,21 @@ const createBody = (verificationToken) => {
         },
     };
 
-    return mailGen.generate(email);
+    return mailGen.generate(msg);
 };
 
-module.exports = {};
+const sendMail = (email, verificationToken) => {
+    const msg = {
+        from: "fxzone@meta.ua",
+        to: email,
+        subject: "Contacts Api Service Account Verification",
+        html: createBody(verificationToken),
+        // text: "",
+    };
+
+    return transporter.sendMail(msg);
+};
+
+module.exports = {
+    sendMail,
+};
