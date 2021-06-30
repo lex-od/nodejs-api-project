@@ -3,6 +3,7 @@ const guard = require("./guard");
 const multerUpload = require("./multerUpload");
 const {
     signup,
+    verify,
     login,
     logout,
     getCurrent,
@@ -12,6 +13,8 @@ const {
 const router = express.Router();
 
 router.post("/signup", express.json(), signup);
+
+router.get("/verify/:verificationToken", verify);
 
 router.post("/login", express.json(), login);
 
