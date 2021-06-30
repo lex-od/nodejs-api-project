@@ -1,5 +1,5 @@
 const { usersService: srv } = require("../../services");
-const { ApiError, apiConsts } = require("../../helpers");
+const { ApiError, apiConsts, emailOperations } = require("../../helpers");
 
 const { EMAIL_IN_USE, INV_PASSWORD, REQUEST_ERRORS, DB_ACCESS_ERROR } =
     apiConsts;
