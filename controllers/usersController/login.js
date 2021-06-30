@@ -4,8 +4,7 @@ const { usersService: srv } = require("../../services");
 const { ApiError, apiConsts } = require("../../helpers");
 
 const { TOKEN_KEY } = process.env;
-const { INV_PASSWORD_TYPE, LOGIN_FAILED, REQUEST_ERRORS, DB_ACCESS_ERROR } =
-    apiConsts;
+const { INV_PASSWORD_TYPE, LOGIN_FAILED, REQUEST_ERRORS } = apiConsts;
 
 const login = async ({ body: { email, password } }, res, next) => {
     try {
@@ -14,13 +13,13 @@ const login = async ({ body: { email, password } }, res, next) => {
 
         const user = await srv.getUser({ email });
 
-        if (!user || !user.comparePassword(password))
+        if (!user?.comparePassword(password) || !user.verified)
             return next(new ApiError(LOGIN_FAILED, 401));
 
         const token = jwt.sign({ _id: user._id }, TOKEN_KEY);
 
         const {
-            _doc: { password: _, ...result },
+            _doc: { verificationToken, password: _, ...result },
         } = await srv.updateFieldById(user._id, { token });
 
         res.json({ result });
@@ -28,7 +27,7 @@ const login = async ({ body: { email, password } }, res, next) => {
         if (REQUEST_ERRORS.includes(name))
             return next(new ApiError(message, 400));
 
-        next(new ApiError(DB_ACCESS_ERROR));
+        next(new ApiError(message));
     }
 };
 
